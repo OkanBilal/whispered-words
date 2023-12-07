@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import ShootingStarButton from "./button/shooting-star-button";
+import axios from "axios";
 
 function Upload() {
   const [file, setFile] = useState(null);
+  const [response, setResponse] = useState(null);
+  const model = "whisper-1";
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -17,20 +19,24 @@ function Upload() {
       alert("Please select a file first!");
       return;
     }
-
     const formData = new FormData();
+    formData.append("model", model);
     formData.append("file", file);
 
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (response.ok) {
-      console.log("File uploaded successfully");
-    } else {
-      console.error("Upload failed");
-    }
+    axios
+      .post("https://api.openai.com/v1/audio/transcriptions", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setResponse(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -72,6 +78,7 @@ function Upload() {
           </div>
         </div>
       </form>
+      {response ? <div>{JSON.stringify(response, null, 2)}</div> : null}
     </div>
   );
 }
