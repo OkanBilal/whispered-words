@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "@/styles/globals.css";
+import Header from "./components/header";
 
 const inter = Mulish({ subsets: ["latin"] });
 
@@ -17,9 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`"absolute inset-0 h-full w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]  mx-auto max-w-6xl  " ${inter.className} `}
+        className={`"absolute inset-0 h-full w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
       >
-        {children}
+        <Header />
+        <main className="relative mx-auto max-w-6xl">{children}</main>
       </body>
     </html>
   );
