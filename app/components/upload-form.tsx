@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import ShootingStarButton from "./button/shooting-star-button";
+import ShootingStarButton from "./ui/shooting-star-button";
 import axios from "axios";
 import SelectLangugage from "./select-language";
 import SelectFormat from "./select-format";
 import { supported_languages } from "../data/supported-languages";
 import { response_format } from "../data/response-format";
+import { Row } from "./ui/row";
 
 function Upload() {
   const [file, setFile] = useState(null);
@@ -43,7 +44,7 @@ function Upload() {
       .post("https://api.openai.com/v1/audio/transcriptions", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
       })
       .then((res) => {
@@ -56,9 +57,9 @@ function Upload() {
   };
 
   return (
-    <div className=" flex justify-center items-center ">
+    <Row className="justify-center items-center ">
       <form onSubmit={handleSubmit} className=" ">
-        <div className="mb-2 flex items-center ">
+        <div className="mb-2 flex items-end ">
           <div className="mr-4">
             <label
               htmlFor="file-upload"
@@ -73,22 +74,16 @@ function Upload() {
               type="file"
               onChange={handleFileChange}
               className=" mt-2 block w-full text-sm text-gray-500
-              file:me-4 file:py-2 file:px-4
+              file:me-4 file:py-2 file:px-5
               file:rounded-lg file:border-0
               file:text-sm file:font-semibold
             file:text-white
               file:disabled:opacity-50 
             file:bg-[#0141ff]
-            hover:file:bg-[#0141ff]"
+            hover:file:bg-[#002aa6] hover:file:cursor-pointer "
             />
-            <p
-              className="mt-2 text-sm text-gray-500 dark:text-gray-300"
-              id="file_input_help"
-            >
-              mp3, wav or flac (max 25MB file size).
-            </p>
           </div>
-          <div>
+          <div >
             <ShootingStarButton>Upload</ShootingStarButton>
           </div>
         </div>
@@ -104,7 +99,7 @@ function Upload() {
         />
       </form>
       {response ? <div>{JSON.stringify(response, null, 2)}</div> : null}
-    </div>
+    </Row>
   );
 }
 
