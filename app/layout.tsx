@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "@/styles/globals.css";
-import Header from "./components/header";
-import Footer from "./components/footer";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 const inter = Mulish({ subsets: ["latin"] });
 

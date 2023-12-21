@@ -5,7 +5,7 @@ import ShootingStarButton from "./ui/shooting-star-button";
 import axios from "axios";
 import SelectLangugage from "./select-language";
 import SelectFormat from "./select-format";
-import { supported_languages } from "../data/supported-languages";
+import { supported_languages } from "@/data/supported-languages";
 import { response_format } from "../data/response-format";
 import { Row } from "./ui/row";
 
