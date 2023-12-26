@@ -1,5 +1,3 @@
-"use client";
-
 import Upload from "@/components/upload-form";
 import { Button } from "@/components/ui/button";
 import { Github } from "@/components/icons";
@@ -13,6 +11,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { transcription } from "@/data/transcription";
 import TranscriptionVisualizer from "@/components/transcription-visualizer";
+import { SignInButton } from "@/components/ui/sign-in-button";
 
 export default function Home() {
   return (
@@ -37,7 +36,7 @@ export default function Home() {
                 See on GitHub
               </Button>
             </Link>
-            <ExploreFeature />
+            <SignInButton/>
           </Row>
 
           <div className="mt-16 mb-8">
