@@ -17,7 +17,7 @@ export const ExploreFeature = () => {
         <Row className=" items-center">
           <div className="sm:px-12 sm:py-8  max-w-2xl mx-auto bg-black relative flex flex-col items-center justify-center antialiased">
             <H1 className="relative z-10 md:leading-relaxed text-gradient text-center font-bold">
-              Coming Soon with Pro<Span className=" text-slate-200">✨</Span>
+              Coming with Pro<Span className=" text-slate-200">✨</Span>
             </H1>
             <P className="text-white text-lg">Multiple Upload</P>
             <P className="text-white text-lg">Translation any language</P>

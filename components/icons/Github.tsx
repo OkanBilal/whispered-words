@@ -9,8 +9,8 @@ function SvgGitHub(props: SvgProps) {
   return (
     <svg
       className={props.className}
-      width="1.5em"
-      height="1.5em"
+      width="1.6em"
+      height="1.6em"
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

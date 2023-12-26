@@ -18,12 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={`"absolute inset-0 h-full w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
+      <div
+        className={`" h-screen w-full bg-black " ${inter.className} `}
       >
-        <main className="relative ">{children}</main>
-      </body>
-    </html>
+        {children}
+      </div>
   );
 }
