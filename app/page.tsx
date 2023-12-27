@@ -79,7 +79,7 @@ export default function Home() {
       </Row> */}
         </Column>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

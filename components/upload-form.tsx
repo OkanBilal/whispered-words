@@ -40,20 +40,12 @@ function Upload() {
     formData.append("language", language);
     formData.append("response_format", format);
 
-    axios
-      .post("https://api.openai.com/v1/audio/transcriptions", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setResponse(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const res = await axios.post("/api/upload", formData);
+      setResponse(res.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -83,7 +75,7 @@ function Upload() {
             hover:file:bg-[#002aa6] hover:file:cursor-pointer "
             />
           </div>
-          <div >
+          <div>
             <ShootingStarButton>Upload</ShootingStarButton>
           </div>
         </div>
