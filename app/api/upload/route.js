@@ -8,7 +8,8 @@ export async function POST(request) {
     url: "https://api.openai.com/v1/audio/transcriptions",
     data: data,
     headers: {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // Changed environment variable name
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+      "Content-Type": "multipart/form-data",
     },
   };
 
@@ -19,9 +20,12 @@ export async function POST(request) {
     }
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "An error occurred" }, {
-      status: error.response?.status || 500,
-      statusText: error.response?.statusText || "Internal Server Error",
-    });
+    return NextResponse.json(
+      { message: "An error occurred" },
+      {
+        status: error.response?.status || 500,
+        statusText: error.response?.statusText || "Internal Server Error",
+      }
+    );
   }
 }
