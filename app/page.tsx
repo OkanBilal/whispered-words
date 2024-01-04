@@ -10,7 +10,6 @@ import { FeatureList } from "@/components/feature-list";
 import Link from "next/link";
 import { ExploreFeature } from "@/components/explore-features";
 import Header from "@/components/header";
-import Footer from "@/components/footer";
 
 export default function Home() {
   return (

@@ -8,14 +8,14 @@ export async function POST(req: Request) {
     const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
     const ratelimit = new Ratelimit({
       redis: kv,
-      limiter: Ratelimit.slidingWindow(1, "60 s"),
+      limiter: Ratelimit.slidingWindow(1, "300 s"),
     });
     const { success, pending, limit, reset, remaining } = await ratelimit.limit(
       ip
     );
     if (!success) {
       return new Response(
-        "You have reached your request limit. Please try again in 1 minutes.",
+        "You have reached your request limit. Please try again in 5 minutes.",
         {
           status: 429,
           headers: {
