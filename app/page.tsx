@@ -8,7 +8,6 @@ import { FeatureList } from "@/components/feature-list";
 import Link from "next/link";
 import { ExploreFeature } from "@/components/explore-features";
 import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { SignInButton } from "@/components/ui/sign-in-button";
 
 export default function Home() {
@@ -78,7 +77,7 @@ export default function Home() {
       </Row> */}
         </Column>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -8,6 +8,7 @@ import SelectFormat from "./select-format";
 import { supported_languages } from "@/data/supported-languages";
 import { response_format } from "../data/response-format";
 import { Row } from "./ui/row";
+import { toast } from "sonner";
 
 function Upload() {
   const [file, setFile] = useState(null);
@@ -40,21 +41,47 @@ function Upload() {
     formData.append("language", language);
     formData.append("response_format", format);
 
-    axios
-      .post("https://api.openai.com/v1/audio/transcriptions", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setResponse(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const res = await axios.post("/api/upload", formData);
+      const transcription = res.data;
+      setResponse(transcription);
+      console.log("res", transcription);
+
+      let mimeType;
+      switch (format) {
+        case "txt":
+          mimeType = "text/plain";
+          break;
+        case "json":
+        case "verbose_json":
+          mimeType = "application/json";
+          break;
+        case "srt":
+        case "vtt":
+          mimeType = "text/plain";
+          break;
+        default:
+          console.error("Unsupported format");
+          return;
+      }
+      downloadFile(transcription, `transcription.${format}`, mimeType);
+    } catch (e) {
+      console.error(e, "error");
+      toast.warning(
+        "You have reached your request limit. Please try again in 5 minutes."
+      );
+    }
   };
+
+  function downloadFile(content, fileName, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const downloadLink = document.createElement("a");
+    downloadLink.download = fileName;
+    downloadLink.href = window.URL.createObjectURL(blob);
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 
   return (
     <Row className="justify-center items-center ">
@@ -83,7 +110,7 @@ function Upload() {
             hover:file:bg-[#002aa6] hover:file:cursor-pointer "
             />
           </div>
-          <div >
+          <div>
             <ShootingStarButton>Upload</ShootingStarButton>
           </div>
         </div>
@@ -98,7 +125,6 @@ function Upload() {
           defaultValue={response_format[0]}
         />
       </form>
-      {response ? <div>{JSON.stringify(response, null, 2)}</div> : null}
     </Row>
   );
 }
