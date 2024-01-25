@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "sonner";
+import StoreProvider from "./StoreProvider";
 
 const inter = Mulish({ subsets: ["latin"] });
 
@@ -18,12 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`"absolute inset-0 h-full w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
-      >
-        <main className="relative ">{children}</main>
-        <Toaster richColors />
-      </body>
+      <StoreProvider>
+        <body
+          className={`"absolute inset-0 h-full w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
+        >
+          <main className="relative ">{children}</main>
+          <Toaster richColors />
+        </body>
+      </StoreProvider>
     </html>
   );
 }

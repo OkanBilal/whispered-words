@@ -1,4 +1,4 @@
-import { clearCookie, getAuthorizationUrl, getUser } from "../../app/auth";
+import { clearCookie, getUser, getAuthorizationUrl } from "@/store/services/authService";
 import { Button } from "./button";
 export async function SignInButton() {
   const { isAuthenticated } = await getUser();
