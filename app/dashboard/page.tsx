@@ -1,5 +1,12 @@
-import React from "react";
+import { ProfileForm } from "./profile-form"
 
-export const Dashboard = () => {
-  return <div>Dashboard</div>;
-};
+export default function ProfilePage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-medium text-white">Profile</h3>
+      </div>
+      <ProfileForm />
+    </div>
+  )
+}
