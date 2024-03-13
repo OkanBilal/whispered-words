@@ -10,7 +10,17 @@ import { ExploreFeature } from "@/components/explore-features";
 import Header from "@/components/header";
 import { SignInButton } from "@/components/ui/sign-in-button";
 
+import { useGetTranscriptionsQuery } from "@/store/api/transcriptionApi";
+
 export default function Home() {
+  //   const {
+  //     data: todos,
+  //     isLoading,
+  //     isSuccess,
+  //     isError,
+  //     error
+  // } = useGetTranscriptionsQuery("transcriptions")
+
   return (
     <>
       <Header />
@@ -33,7 +43,7 @@ export default function Home() {
                 See on GitHub
               </Button>
             </Link>
-            <SignInButton/>
+            <SignInButton />
           </Row>
 
           <div className="mt-16 mb-8">
