@@ -1,0 +1,25 @@
+{
+  "transcriptions": [
+    {
+      "id": 1,
+      "name": "Record1",
+      "size": "1900000",
+      "format": "srt",
+      "audioFile": "record1.mp3"
+    },
+    {
+      "id": 2,
+      "name": "Record2",
+      "size": "2900000",
+      "format": "txt",
+      "audioFile": "record2.mp3"
+    },
+    {
+      "id": 3,
+      "name": "Record3",
+      "size": "3900000",
+      "format": "json",
+      "audioFile": "record3.mp3"
+    }
+  ]
+}

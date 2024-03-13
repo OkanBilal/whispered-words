@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { transcriptionApi } from "@/store/api/transcriptionApi";
-import { authApi } from "@/store/api/authApi";
+import { apiSlice } from "./api/apiSlice";
+import authReducer from "./slices/authSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      [authApi.reducerPath]: authApi.reducer,
-      [transcriptionApi.reducerPath]: transcriptionApi.reducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
+      auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(transcriptionApi.middleware),
+      getDefaultMiddleware().concat(apiSlice.middleware),
   });
 };
 
