@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     );
     if (!success) {
       return new Response(
-        "You have reached your request limit. Please try again in 5 minutes.",
+        "You've reached your request limit. Please try again in 5 minutes.",
         {
           status: 429,
           headers: {
