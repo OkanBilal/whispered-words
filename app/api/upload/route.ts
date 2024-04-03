@@ -27,9 +27,7 @@ export async function POST(req: Request) {
       );
     }
   } else {
-    console.log(
-      "KV_REST_API_URL and KV_REST_API_TOKEN env vars not found, not rate limiting..."
-    );
+    console.log("env vars not found, not rate limiting...");
   }
 
   const data = await req.formData();

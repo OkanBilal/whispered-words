@@ -22,6 +22,7 @@
     "date-fns": "^3.0.6",
     "framer-motion": "^10.16.16",
     "lucide-react": "^0.302.0",
+    "music-metadata-browser": "^2.5.10",
     "next": "14.0.3",
     "openai": "^4.0.0",
     "react": "^18",

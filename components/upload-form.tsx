@@ -9,13 +9,26 @@ import { supported_languages } from "@/data/supported-languages";
 import { response_format } from "../data/response-format";
 import { Row } from "./ui/row";
 import { toast } from "sonner";
+import * as mm from "music-metadata-browser";
 
 function Upload() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState(null);
   const [language, setLanguage] = useState(supported_languages[0].iso);
   const [format, setFormat] = useState(response_format[0]);
+  const [duration, setDuration] = useState(null);
+
   const model = "whisper-1";
+
+  async function getAudioDuration(file) {
+    try {
+      const metadata = await mm.parseBlob(file);
+      return metadata.format.duration;
+    } catch (error) {
+      console.error("Error parsing metadata:", error);
+      return null;
+    }
+  }
 
   const handleLanguageChange = (event) => {
     setLanguage(event.target.value);
@@ -25,8 +38,10 @@ function Upload() {
     setFormat(event.target.value);
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     setFile(event.target.files[0]);
+    const duration = await getAudioDuration(event.target.files[0]);
+    setDuration(duration);
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,8 +60,6 @@ function Upload() {
       const res = await axios.post("/api/upload", formData);
       const transcription = res.data;
       setResponse(transcription);
-      console.log("res", transcription);
-
       let mimeType;
       switch (format) {
         case "txt":
@@ -66,7 +79,6 @@ function Upload() {
       }
       downloadFile(transcription, `transcription.${format}`, mimeType);
     } catch (e) {
-      console.error(e, "error");
       toast.warning(
         "You have reached your request limit. Please try again in 5 minutes."
       );
@@ -111,9 +123,18 @@ function Upload() {
             />
           </div>
           <div>
-            <ShootingStarButton>Upload</ShootingStarButton>
+            <ShootingStarButton
+              disabled={duration && duration >= 120 ? true : false}
+            >
+              Upload
+            </ShootingStarButton>
           </div>
         </div>
+        {duration && duration >= 120 ? (
+          <p className="text-[#99a3c3] text-xs ">
+            *You can upload less than 2 minutes
+          </p>
+        ) : null}
         <SelectLangugage
           options={supported_languages}
           onChange={handleLanguageChange}
