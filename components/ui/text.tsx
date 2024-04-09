@@ -13,7 +13,7 @@ export const H1: RFC = ({ children, ...props }) => {
     <h1
       {...props}
       className={cx(
-        "text-3xl font-semibold tracking-tight sm:text-4xl",
+        "text-2xl font-semibold tracking-tight md:text-4xl",
         props.className
       )}
     >
@@ -26,7 +26,7 @@ export const H2: RFC = ({ children, ...props }) => {
     <h2
       {...props}
       className={cx(
-        "pb-2 text-3xl font-semibold tracking-tight",
+        "text-2xl pb-2 md:text-3xl font-semibold tracking-tight",
         props.className
       )}
     >

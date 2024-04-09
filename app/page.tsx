@@ -10,6 +10,9 @@ import { FeatureList } from "@/components/feature-list";
 import Link from "next/link";
 import { ExploreFeature } from "@/components/explore-features";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { transcription } from "@/data/transcription";
+import TranscriptionVisualizer from "@/components/transcription-visualizer";
 
 export default function Home() {
   return (
@@ -42,7 +45,7 @@ export default function Home() {
               Experience superhuman accuracy
             </H2>
           </div>
-          <div className="lg:flex items-start mb-24">
+          <div className="lg:flex items-start mb-12">
             <div className="lg:mr-24 mr-0 lg:mb-0 mb-24">
               <FeatureList
                 icon="〄"
@@ -76,9 +79,16 @@ export default function Home() {
           <BackgroundBeams />
         </div>
       </Row> */}
+          <div className="mb-24">
+            <H2 className="text-gradient text-center mb-2">See it in action</H2>
+            <TranscriptionVisualizer
+              audioSrc="gwh.mp4"
+              transcription={transcription}
+            />
+          </div>
         </Column>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

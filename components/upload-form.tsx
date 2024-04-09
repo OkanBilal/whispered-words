@@ -55,6 +55,7 @@ function Upload() {
     formData.append("file", file);
     formData.append("language", language);
     formData.append("response_format", format);
+    formData.append("timestamp_granularities[]", "word");
 
     try {
       const res = await axios.post("/api/upload", formData);
