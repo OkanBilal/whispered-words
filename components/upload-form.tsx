@@ -156,14 +156,14 @@ function Upload() {
         <div className="mt-4">
           <p className="block mb-2 text-sm font-medium text-gray-500">Prompt</p>
           <textarea
-            className="w-full rounded outline-none p-2 placeholder:text-sm"
+            className="w-full text-sm rounded outline-none p-2 placeholder:text-sm"
             rows={4}
             placeholder="Enter prompt to improve the quality of the transcripts..."
             value={prompt}
             onChange={handlePromptChange}
           />
           <p className="text-gray-500 text-xs ">
-            *The prompt should match the audio language.
+            *The prompt should match the audio language. Max 244 characters.
           </p>
         </div>
       </form>

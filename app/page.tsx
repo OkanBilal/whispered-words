@@ -48,20 +48,25 @@ export default function Home() {
           <div className="lg:flex items-center mb-12">
             <div className="lg:mr-24 mr-0 lg:mb-0 mb-24">
               <FeatureList
+                icon="⎋"
+                title="Just upload audio in any file type"
+                description="Effortlessly turn your audio files into text transcriptions."
+              />
+              <FeatureList
                 icon="〄"
                 title="Support for 50+ Languages"
                 description="Offering transcription capabilities in a wide range of global
                   languages and dialects."
               />
               <FeatureList
-                icon="⎋"
-                title="Just upload audio in any file type"
-                description="Effortlessly turn your audio files into text transcriptions."
-              />
-              <FeatureList
                 icon="☇"
                 title="Export most popular transcription formats"
                 description="Select the best format for your purpose and easily share your transcripts!"
+              />
+              <FeatureList
+                icon="⌥"
+                title="Improve the reliability with different techniques "
+                description="Use the prompt parameter to pass a dictionary of the correct spellings."
               />
             </div>
             <Upload />

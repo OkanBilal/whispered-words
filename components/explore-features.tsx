@@ -22,7 +22,6 @@ export const ExploreFeature = () => {
             <P className="text-white text-lg">Multiple Upload</P>
             <P className="text-white text-lg">Translation any language</P>
             <P className="text-white text-lg">Longer inputs</P>
-            <P className="text-white text-lg">Prompting</P>
             <P className="text-white text-lg">Post-processing with GPT-4</P>
           </div>
         </Row>
