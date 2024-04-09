@@ -45,7 +45,7 @@ export default function Home() {
               Experience superhuman accuracy
             </H2>
           </div>
-          <div className="lg:flex items-start mb-12">
+          <div className="lg:flex items-center mb-12">
             <div className="lg:mr-24 mr-0 lg:mb-0 mb-24">
               <FeatureList
                 icon="〄"

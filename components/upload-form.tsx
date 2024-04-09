@@ -14,9 +14,10 @@ import * as mm from "music-metadata-browser";
 function Upload() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState(null);
-  const [language, setLanguage] = useState(supported_languages[0].iso);
+  const [language, setLanguage] = useState(supported_languages[7].iso);
   const [format, setFormat] = useState(response_format[0]);
   const [duration, setDuration] = useState(null);
+  const [prompt, setPrompt] = useState();
 
   const model = "whisper-1";
 
@@ -32,6 +33,10 @@ function Upload() {
 
   const handleLanguageChange = (event) => {
     setLanguage(event.target.value);
+  };
+
+  const handlePromptChange = (event) => {
+    setPrompt(event.target.value);
   };
 
   const handleFormatChange = (event) => {
@@ -55,7 +60,9 @@ function Upload() {
     formData.append("file", file);
     formData.append("language", language);
     formData.append("response_format", format);
-    formData.append("timestamp_granularities[]", "word");
+    {
+      prompt ? formData.append("prompt", prompt) : null;
+    }
 
     try {
       const res = await axios.post("/api/upload", formData);
@@ -139,13 +146,26 @@ function Upload() {
         <SelectLangugage
           options={supported_languages}
           onChange={handleLanguageChange}
-          defaultValue={supported_languages[0].iso}
+          defaultValue={supported_languages[13].iso}
         />
         <SelectFormat
           options={response_format}
           onChange={handleFormatChange}
           defaultValue={response_format[0]}
         />
+        <div className="mt-4">
+          <p className="block mb-2 text-sm font-medium text-gray-500">Prompt</p>
+          <textarea
+            className="w-full rounded outline-none p-2 placeholder:text-sm"
+            rows={4}
+            placeholder="Enter prompt to improve the quality of the transcripts..."
+            value={prompt}
+            onChange={handlePromptChange}
+          />
+          <p className="text-gray-500 text-xs ">
+            *The prompt should match the audio language.
+          </p>
+        </div>
       </form>
     </Row>
   );
