@@ -69,23 +69,35 @@ function Upload() {
       const transcription = res.data;
       setResponse(transcription);
       let mimeType;
+      let fileName;
+      let content;
       switch (format) {
-        case "txt":
+        case "text":
           mimeType = "text/plain";
+          fileName = "transcription.txt";
+          content = transcription;
           break;
         case "json":
         case "verbose_json":
           mimeType = "application/json";
+          fileName = "transcription.json";
+          content = JSON.stringify(transcription, null, 2);
           break;
         case "srt":
+          mimeType = "text/plain";
+          fileName = "transcription.srt";
+          content = transcription;
+          break;
         case "vtt":
           mimeType = "text/plain";
+          fileName = "transcription.vtt";
+          content = transcription;
           break;
         default:
           console.error("Unsupported format");
           return;
       }
-      downloadFile(transcription, `transcription.${format}`, mimeType);
+      downloadFile(content, fileName, mimeType);
     } catch (e) {
       toast.warning(
         "You have reached your request limit. Please try again in 5 minutes."
