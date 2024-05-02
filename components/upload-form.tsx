@@ -14,8 +14,8 @@ import * as mm from "music-metadata-browser";
 function Upload() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState(null);
-  const [language, setLanguage] = useState(supported_languages[7].iso);
-  const [format, setFormat] = useState(response_format[0]);
+  const [language, setLanguage] = useState(supported_languages[52].iso);
+  const [format, setFormat] = useState(response_format[4]);
   const [duration, setDuration] = useState(null);
   const [prompt, setPrompt] = useState();
 
@@ -74,23 +74,23 @@ function Upload() {
       switch (format) {
         case "text":
           mimeType = "text/plain";
-          fileName = "transcription.txt";
+          fileName = `${file.name}.txt`;
           content = transcription;
           break;
         case "json":
         case "verbose_json":
           mimeType = "application/json";
-          fileName = "transcription.json";
+          fileName = `${file.name}.json`;
           content = JSON.stringify(transcription, null, 2);
           break;
         case "srt":
           mimeType = "text/plain";
-          fileName = "transcription.srt";
+          fileName = `${file.name}.srt`;
           content = transcription;
           break;
         case "vtt":
           mimeType = "text/plain";
-          fileName = "transcription.vtt";
+          fileName = `${file.name}.vtt`;
           content = transcription;
           break;
         default:
@@ -144,26 +144,26 @@ function Upload() {
           </div>
           <div>
             <ShootingStarButton
-              disabled={duration && duration >= 120 ? true : false}
+              disabled={duration && duration >= 900 ? true : false}
             >
               Upload
             </ShootingStarButton>
           </div>
         </div>
-        {duration && duration >= 120 ? (
+        {duration && duration >= 900 ? (
           <p className="text-[#99a3c3] text-xs ">
-            *You can upload less than 2 minutes
+            *You can upload less than 15 minutes
           </p>
         ) : null}
         <SelectLangugage
           options={supported_languages}
           onChange={handleLanguageChange}
-          defaultValue={supported_languages[13].iso}
+          defaultValue={supported_languages[52].iso}
         />
         <SelectFormat
           options={response_format}
           onChange={handleFormatChange}
-          defaultValue={response_format[0]}
+          defaultValue={response_format[4]}
         />
         <div className="mt-4">
           <p className="block mb-2 text-sm font-medium text-gray-500">Prompt</p>
