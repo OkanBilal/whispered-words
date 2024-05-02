@@ -14,8 +14,8 @@ import * as mm from "music-metadata-browser";
 function Upload() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState(null);
-  const [language, setLanguage] = useState(supported_languages[7].iso);
-  const [format, setFormat] = useState(response_format[0]);
+  const [language, setLanguage] = useState(supported_languages[52].iso);
+  const [format, setFormat] = useState(response_format[4]);
   const [duration, setDuration] = useState(null);
   const [prompt, setPrompt] = useState();
 
@@ -158,12 +158,12 @@ function Upload() {
         <SelectLangugage
           options={supported_languages}
           onChange={handleLanguageChange}
-          defaultValue={supported_languages[13].iso}
+          defaultValue={supported_languages[52].iso}
         />
         <SelectFormat
           options={response_format}
           onChange={handleFormatChange}
-          defaultValue={response_format[0]}
+          defaultValue={response_format[4]}
         />
         <div className="mt-4">
           <p className="block mb-2 text-sm font-medium text-gray-500">Prompt</p>
