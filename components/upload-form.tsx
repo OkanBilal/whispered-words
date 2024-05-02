@@ -74,23 +74,23 @@ function Upload() {
       switch (format) {
         case "text":
           mimeType = "text/plain";
-          fileName = "transcription.txt";
+          fileName = `${file.name}.txt`;
           content = transcription;
           break;
         case "json":
         case "verbose_json":
           mimeType = "application/json";
-          fileName = "transcription.json";
+          fileName = `${file.name}.json`;
           content = JSON.stringify(transcription, null, 2);
           break;
         case "srt":
           mimeType = "text/plain";
-          fileName = "transcription.srt";
+          fileName = `${file.name}.srt`;
           content = transcription;
           break;
         case "vtt":
           mimeType = "text/plain";
-          fileName = "transcription.vtt";
+          fileName = `${file.name}.vtt`;
           content = transcription;
           break;
         default:
@@ -144,15 +144,15 @@ function Upload() {
           </div>
           <div>
             <ShootingStarButton
-              disabled={duration && duration >= 120 ? true : false}
+              disabled={duration && duration >= 900 ? true : false}
             >
               Upload
             </ShootingStarButton>
           </div>
         </div>
-        {duration && duration >= 120 ? (
+        {duration && duration >= 900 ? (
           <p className="text-[#99a3c3] text-xs ">
-            *You can upload less than 2 minutes
+            *You can upload less than 15 minutes
           </p>
         ) : null}
         <SelectLangugage
