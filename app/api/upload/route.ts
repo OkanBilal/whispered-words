@@ -1,36 +1,8 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
-import { Ratelimit } from "@upstash/ratelimit";
-import { kv } from "@vercel/kv";
 
-export async function POST(req: Request) {
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const ratelimit = new Ratelimit({
-      redis: kv,
-      limiter: Ratelimit.slidingWindow(1, "3 s"),
-    });
-    const { success, pending, limit, reset, remaining } = await ratelimit.limit(
-      ip
-    );
-    if (!success) {
-      return new Response(
-        "You've reached your request limit. Please try again in 5 minutes.",
-        {
-          status: 429,
-          headers: {
-            "X-RateLimit-Limit": limit.toString(),
-            "X-RateLimit-Remaining": remaining.toString(),
-            "X-RateLimit-Reset": reset.toString(),
-          },
-        }
-      );
-    }
-  } else {
-    console.log("env vars not found, not rate limiting...");
-  }
-
-  const data = await req.formData();
+export async function POST(request: Request) {
+  const data = await request.formData();
   let config = {
     method: "post",
     url: "https://api.openai.com/v1/audio/transcriptions",
