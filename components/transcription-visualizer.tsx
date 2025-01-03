@@ -1,3 +1,5 @@
+  "use client"
+
 import React, { useRef, useState, useEffect } from "react";
 
 const TranscriptionVisualizer = ({ audioSrc, transcription }) => {

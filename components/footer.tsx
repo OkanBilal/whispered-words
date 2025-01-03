@@ -16,7 +16,10 @@ const Footer = () => {
 
       <a className="group" href="https://github.com/okanbilal">
         <Row className="items-center">
-          <Span className="group-hover:text-white text-gray-300 text-sm mr-2"> Follow for updates</Span>
+          <Span className="group-hover:text-white text-gray-300 text-sm mr-2">
+            {" "}
+            Follow for updates
+          </Span>
           <Github color="#fff" />
         </Row>
       </a>

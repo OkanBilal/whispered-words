@@ -10,6 +10,7 @@ import { response_format } from "../data/response-format";
 import { Row } from "./ui/row";
 import { toast } from "sonner";
 import * as mm from "music-metadata-browser";
+import { createClient } from "@/lib/supabase/client";
 
 function Upload() {
   const [file, setFile] = useState(null);
@@ -20,6 +21,8 @@ function Upload() {
   const [prompt, setPrompt] = useState();
 
   const model = "whisper-1";
+
+  const supabase = createClient();
 
   async function getAudioDuration(file) {
     try {
@@ -66,7 +69,18 @@ function Upload() {
 
     try {
       const res = await axios.post("/api/upload", formData);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const transcription = res.data;
+      const title = String(file.name);
+      if (user) {
+        await supabase.from("transcriptions").insert({
+          title,
+          user_id: user.id,
+          description: transcription,
+        });
+      }
       setResponse(transcription);
       let mimeType;
       let fileName;
