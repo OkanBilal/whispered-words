@@ -3,6 +3,7 @@ import { Mulish } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "sonner";
 import { SidebarNav } from "@/components/sidebar-nav";
+import Header from "@/components/header";
 
 const inter = Mulish({ subsets: ["latin"] });
 
@@ -34,10 +35,11 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div
-      className={`"absolute inset-0  w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
+      className={`"absolute inset-0 h-full  w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
     >
       <div className="space-y-6 p-16 pb-16">
         <div className="space-y-0.5">
+          <Header />
           <h2 className="text-2xl font-medium text-white tracking-tight mb-12">
             Dashboard
           </h2>
