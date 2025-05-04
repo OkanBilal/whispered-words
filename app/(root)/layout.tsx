@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "sonner";
-import { ReduxProvider } from "@/components/redux-provider";
 
 const inter = Mulish({ subsets: ["latin"] });
 
@@ -22,10 +21,8 @@ export default function RootLayout({
       <body
         className={`"absolute inset-0 h-full w-full bg-black bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:32px_32px] " ${inter.className} `}
       >
-        <ReduxProvider>
-          <main className="relative ">{children}</main>
-          <Toaster richColors />
-        </ReduxProvider>
+        <main className="relative ">{children}</main>
+        <Toaster richColors />
       </body>
     </html>
   );
