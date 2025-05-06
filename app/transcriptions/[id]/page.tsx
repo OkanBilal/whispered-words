@@ -3,11 +3,19 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Header from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
-import ReduxProvider from "@/components/ReduxProvider";
-import TranscriptionsList from "@/components/transcriptions-list";
+import TranscriptionDetail from "@/components/transcription-detail";
 
-export default async function TranscriptionPage() {
+interface TranscriptionDetailPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function TranscriptionDetailPage({
+  params,
+}: TranscriptionDetailPageProps) {
   const supabase = await createClient();
+  const { id } = params;
 
   const sidebarNavItems = [
     {
@@ -33,15 +41,8 @@ export default async function TranscriptionPage() {
           <aside className="md:col-span-1">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-
           <main className="md:col-span-3 space-y-6">
-            <h1 className="text-2xl font-bold text-white mb-6">
-              Transcriptions
-            </h1>
-
-            <ReduxProvider>
-              <TranscriptionsList />
-            </ReduxProvider>
+            <TranscriptionDetail id={id} />
           </main>
         </div>
       </div>

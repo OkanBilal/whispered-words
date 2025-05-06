@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import ShootingStarButton from "./ui/shooting-star-button";
-import axios from "axios";
 import SelectLangugage from "./select-language";
 import SelectFormat from "./select-format";
 import { supported_languages } from "@/data/supported-languages";
@@ -13,6 +12,8 @@ import * as mm from "music-metadata-browser";
 import { createClient } from "@/lib/supabase/client";
 import { Textarea } from "./ui/text-area";
 import { Label } from "./ui/label";
+import { useUploadTranscriptionMutation, useSaveTranscriptionMutation } from "@/lib/transcriptionsApi";
+import { Loader } from "./icons";
 
 
 interface DownloadFileParams {
@@ -33,6 +34,10 @@ function Upload() {
   const [format, setFormat] = useState(response_format[4]);
   const [duration, setDuration] = useState<number | null>(null);
   const [prompt, setPrompt] = useState<string>("");
+
+  // RTK Query mutations
+  const [uploadTranscription, { isLoading: isUploading }] = useUploadTranscriptionMutation();
+  const [saveTranscription, { isLoading: isSaving }] = useSaveTranscriptionMutation();
 
   const supabase = createClient();
 
@@ -75,43 +80,63 @@ function Upload() {
       return;
     }
     
-    const formData = new FormData();
-    formData.append("model", DEFAULT_MODEL);
-    formData.append("file", file);
-    formData.append("language", language);
-    formData.append("response_format", format);
-    
-    if (prompt) {
-      formData.append("prompt", prompt);
-    }
-
     try {
-      const res = await axios.post<string>("/api/upload", formData);
-      const transcription = res.data;
-
-      console.log("Transcription response:", transcription);
-      
+      // Get the current user
       const { data: { user } } = await supabase.auth.getUser();
-      const title = String(file.name);
-      console.log("User ID:", user?.id);
-      console.log("Title:", title);
       
-      if (user) {
-        await supabase.from("transcriptions").insert({
-          title,
-          user_id: user.id,
-        });
+      if (!user) {
+        toast.error("You must be logged in to upload transcriptions.");
+        return;
       }
       
-      setResponse(transcription);
+      // Prepare the transcription request
+      const transcriptionRequest = {
+        file,
+        language,
+        format,
+        prompt: prompt || undefined,
+        model: DEFAULT_MODEL
+      };
       
-      const downloadInfo = getDownloadInfo(format, file.name, transcription);
+      // Upload the audio file for transcription using RTK Query
+      const result = await uploadTranscription(transcriptionRequest).unwrap();
+      
+      // Extract the transcription from the response (handle different response formats)
+      const transcriptionContent = result.text || result.transcription || JSON.stringify(result);
+      const title = String(file.name);
+      
+      console.log("Transcription response:", transcriptionContent);
+      console.log("User ID:", user.id);
+      console.log("Title:", title);
+      
+      // Store the transcription content in the state for the user to view/download
+      setResponse(transcriptionContent);
+      
+      // Save the transcription metadata to the database using RTK Query
+      try {
+        await saveTranscription({
+          title,
+          user_id: user.id,
+          // Don't include content as it's not in the database schema
+        });
+        toast.success("Transcription saved successfully!");
+      } catch (saveError) {
+        console.error("Error saving transcription:", saveError);
+        toast.error("Transcription was processed but couldn't be saved to your account.");
+      }
+      
+      // Download the file if needed
+      const downloadInfo = getDownloadInfo(format, file.name, transcriptionContent);
+        
       if (downloadInfo) {
         downloadFile(downloadInfo);
       }
+
+      toast.success("Transcription completed successfully!");
     } catch (e) {
-      toast.warning(
-        "You have reached your request limit. Please try again in 5 minutes."
+      console.error("Error during transcription:", e);
+      toast.error(
+        "An error occurred during transcription. You may have reached your request limit."
       );
     }
   };
@@ -188,10 +213,24 @@ function Upload() {
           </div>
           <div className="self-end">
             <ShootingStarButton
-              disabled={duration !== null && duration > MAX_AUDIO_DURATION_SECONDS}
+              disabled={
+                (duration !== null && duration > MAX_AUDIO_DURATION_SECONDS) ||
+                isUploading ||
+                isSaving
+              }
               type="submit"
+              className="w-[144px] h-[44px]"
             >
-              Upload
+              <div className="flex items-center justify-center gap-2 whitespace-nowrap">
+                {(isUploading || isSaving) ? (
+                  <>
+                    <Loader className="h-4 w-4 animate-spin" />
+                    <span>Processing</span>
+                  </>
+                ) : (
+                  <span>Upload</span>
+                )}
+              </div>
             </ShootingStarButton>
           </div>
         </div>

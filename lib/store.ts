@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { authReducer } from "./authSlice";
+import { errorReducer } from "./errorSlice";
 import { transcriptionsApi } from "./transcriptionsApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
   reducer: { 
     auth: authReducer,
+    error: errorReducer,
     [transcriptionsApi.reducerPath]: transcriptionsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>

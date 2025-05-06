@@ -18,7 +18,7 @@ export default function Home() {
     <>
       <Header />
       <div className="mx-auto max-w-6xl">
-        <Column className=" sm:pt-28 sm:px-28 p-8 ">
+        <Column className=" sm:pt-28 sm:px-16 p-8 ">
           <div className="relative flex self-center place-items-center before:absolute before:h-[300px] before:w-[280px]  sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[40px] after:translate-x-1/3 after:bg-gradient-conic  after:blur-2xl after:content-[''] before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-50 after:from-sky-900 after:via-[#0141ff] after:opacity-40 before:lg:h-[360px] z-[-1]" />
           <H1 className="text-gradient text-center mb-4">
             Convert sound recordings into written text

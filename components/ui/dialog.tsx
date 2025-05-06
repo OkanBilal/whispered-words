@@ -117,4 +117,6 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogPortal,
+  DialogOverlay,
 };
