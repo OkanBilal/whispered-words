@@ -1,29 +1,58 @@
+"use client";
 import { Span } from "./ui/text";
 import AuthButton from "./auth-button-client";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import { setAuthState } from "@/lib/authSlice";
 
-export default async function Header() {
-  const supabase = await createClient();
+export default function Header() {
+  const dispatch = useAppDispatch();
+  const authState = useAppSelector((state) => state.auth.authState);
+  const [session, setSession] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const supabase = createClient();
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  useEffect(() => {
+    const fetchSession = async () => {
+      setIsLoading(true);
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        setSession(session);
+        dispatch(setAuthState(!!session));
+      } catch (error) {
+        console.error("Error fetching session:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+      dispatch(setAuthState(!!newSession));
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [dispatch, supabase]);
 
   return (
     <header className="flex items-center justify-between py-6 px-6 sm:py-8 sm:px-24">
       <div>
         <Span className="text-xl md:text-2xl mr-1 text-gradient">🌬️</Span>
         <Span className="text-lg md:text-xl font-semibold text-gradient ">
-          Whispered Words
+          <a href="/">Whispered Words</a>
         </Span>
       </div>
-      <div>
-        {session ? (
-          <a href="/profile" className="text-white mr-8">
-            Profile
-          </a>
-        ) : null}
+      <div className="flex items-center">
+
         <AuthButton session={session} />
       </div>
     </header>

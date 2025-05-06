@@ -37,13 +37,18 @@ export function AvatarUpload({ userId, url, onUpload }: AvatarUploadProps) {
         .single();
 
       if (profile?.avatar_url) {
-        const { data } = await supabase.storage
-          .from("avatars")
-          .download(profile.avatar_url);
-          
-        if (data) {
-          const url = URL.createObjectURL(data);
-          setAvatarUrl(url);
+        if (profile.avatar_url.startsWith('"http')) {
+          const cleanUrl = profile.avatar_url.replace(/^"|"$/g, '');
+          setAvatarUrl(cleanUrl);
+        } else {
+          const { data } = await supabase.storage
+            .from("avatars")
+            .download(profile.avatar_url);
+            
+          if (data) {
+            const url = URL.createObjectURL(data);
+            setAvatarUrl(url);
+          }
         }
       }
     } catch (error) {

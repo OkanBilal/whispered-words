@@ -30,7 +30,7 @@ export default function Home() {
             <Link href={"https://github.com/OkanBilal/whispered-words"}>
               <Button
                 leftIcon={<Github color="#fff" />}
-                className=" bg-black hover:bg-neutral-900 text-white rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-neutral-800 text-sm font-semibold mr-4 transition-all duration-200"
+                className=" bg-black hover:bg-neutral-900 text-white rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-neutral-800 text-sm font-semibold mr-4 "
               >
                 See on GitHub
               </Button>

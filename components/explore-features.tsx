@@ -9,7 +9,7 @@ export const ExploreFeature = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className=" bg-white hover:bg-neutral-200 text-black  rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-gray-800 text-sm font-semibold transition-all duration-200">
+        <Button className=" bg-white hover:bg-neutral-200 text-black  rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-gray-800 text-sm font-semibold">
           Explore Pro Features
         </Button>
       </DialogTrigger>

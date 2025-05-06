@@ -46,9 +46,11 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 type ProfileProps = {
   initialData?: any;
   userId: string;
+  userEmail?: string;
+  userName?: string;
 };
 
-export function ProfileForm({ initialData, userId }: ProfileProps) {
+export function ProfileForm({ initialData, userId, userEmail, userName }: ProfileProps) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
 
@@ -56,7 +58,7 @@ export function ProfileForm({ initialData, userId }: ProfileProps) {
     resolver: zodResolver(profileFormSchema),
     mode: "onChange",
     defaultValues: {
-      full_name: initialData?.full_name || "",
+      full_name: userName || initialData?.name?.replace(/^"|"$/g, '') || initialData?.full_name || "",
       bio: initialData?.bio || "",
       website: initialData?.website || "",
     },
@@ -65,9 +67,12 @@ export function ProfileForm({ initialData, userId }: ProfileProps) {
   async function onSubmit(data: ProfileFormValues) {
     setIsLoading(true);
     try {
+      // Keep the full_name value from the form defaults
       const { error } = await supabase.from("profiles").upsert({
         id: userId,
-        ...data,
+        full_name: userName || initialData?.name?.replace(/^"|"$/g, '') || initialData?.full_name || "",
+        bio: data.bio,
+        website: data.website,
         updated_at: new Date().toISOString(),
       });
 
@@ -87,33 +92,31 @@ export function ProfileForm({ initialData, userId }: ProfileProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="full_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-white">Full Name</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  className="bg-black opacity-50 text-white border-slate-700 border-2 "
-                />
-              </FormControl>
-              <FormDescription className="text-gray-400">
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="mb-6">
+          <FormLabel className="text-white">Email</FormLabel>
+          <Input
+            type="email"
+            value={userEmail || ""}
+            disabled
+            className="bg-black opacity-50 text-white border-slate-700 border-2 cursor-not-allowed mt-1 focus:outline-none focus:ring-0 focus:ring-offset-0"
+          />
+          <FormDescription className="text-gray-400 mt-1">
+            Your email address cannot be changed.
+          </FormDescription>
+        </div>
 
-        <Button
-          className=" bg-white hover:bg-neutral-200 text-black  rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-gray-800 text-sm font-semibold transition-all duration-200"
-          type="submit"
-          disabled={isLoading}
-        >
-          {isLoading ? "Updating..." : "Update profile"}
-        </Button>
+        <div className="mb-6">
+          <FormLabel className="text-white">Full Name</FormLabel>
+          <Input
+            type="text"
+            value={userName || initialData?.name?.replace(/^"|"$/g, '') || initialData?.full_name || ""}
+            disabled
+            className="bg-black opacity-50 text-white border-slate-700 border-2 cursor-not-allowed mt-1 focus:outline-none focus:ring-0 focus:ring-offset-0"
+          />
+          <FormDescription className="text-gray-400 mt-1">
+            Your name is synced from your authentication provider.
+          </FormDescription>
+        </div>
       </form>
     </Form>
   );
