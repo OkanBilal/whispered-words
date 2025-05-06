@@ -1,3 +1,4 @@
+  "use client";
 import Upload from "@/components/upload-form";
 import { Button } from "@/components/ui/button";
 import { Github } from "@/components/icons";

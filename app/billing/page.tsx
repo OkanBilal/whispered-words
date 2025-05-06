@@ -1,14 +1,11 @@
 import React from "react";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { H1, P } from "@/components/ui/text";
 import { SidebarNav } from "@/components/sidebar-nav";
 import Header from "@/components/header";
 import { redirect } from "next/navigation";
 import { BillingClient } from "@/components/billing-client";
 
-export default async function BillingPage() {
+export default async function Billing() {
   const supabase = await createClient();
 
   const sidebarNavItems = [
@@ -39,7 +36,6 @@ export default async function BillingPage() {
           <aside className="md:col-span-1">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-
           <main className="md:col-span-3 space-y-6">
             <BillingClient />
           </main>

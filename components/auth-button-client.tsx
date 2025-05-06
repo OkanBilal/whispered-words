@@ -8,9 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { User } from "@supabase/supabase-js";
 import { PersonIcon, FileTextIcon, ExitIcon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
 
 interface AuthButtonProps {
-  session: any; // Replace 'any' with the appropriate type if known
+  session: any; 
 }
 
 export default function AuthButton({ session }: AuthButtonProps) {
@@ -18,10 +19,20 @@ export default function AuthButton({ session }: AuthButtonProps) {
   const dispatch = useAppDispatch();
   const supabase = createClient();
   const user = session?.user as User | undefined;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (session !== undefined) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [session]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    dispatch(setAuthState(false)); // Update Redux state
+    dispatch(setAuthState(false));
     router.refresh();
   };
 
@@ -34,7 +45,34 @@ export default function AuthButton({ session }: AuthButtonProps) {
     });
   };
 
-  return session ? (
+  if (isLoading) {
+    return (
+      <div className="h-8 w-8 flex items-center justify-center">
+        <svg
+          className="size-5 animate-spin text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          />
+        </svg>
+      </div>
+    );
+  }
+
+  const AvatarComponent = (
     <Popover>
       <PopoverTrigger>
         <div className="relative h-8 w-8 rounded-full cursor-pointer">
@@ -87,12 +125,16 @@ export default function AuthButton({ session }: AuthButtonProps) {
         </div>
       </PopoverContent>
     </Popover>
-  ) : (
+  );
+
+  const LoginComponent = (
     <Button
-      className=" bg-white hover:bg-neutral-200 text-black  rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-black text-sm font-semibold transition-all duration-200"
+      className="bg-white hover:bg-neutral-200 text-black rounded-md px-1 py-2 sm:px-3 sm:py-2 border border-black text-sm font-semibold"
       onClick={handleSignIn}
     >
       Login
     </Button>
   );
+
+  return session ? AvatarComponent : LoginComponent;
 }

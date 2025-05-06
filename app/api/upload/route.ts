@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
     const ratelimit = new Ratelimit({
       redis: kv,
-      limiter: Ratelimit.slidingWindow(1, "3 s"),
+      limiter: Ratelimit.slidingWindow(1, "300 s"),
     });
     const { success, pending, limit, reset, remaining } = await ratelimit.limit(
       ip
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     if (response.status >= 200 && response.status < 300) {
       return NextResponse.json(response.data);
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return NextResponse.json(
       { message: "An error occurred" },

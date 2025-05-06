@@ -56,7 +56,7 @@ export default async function Profile() {
             <Card className="p-6 shadow-lg rounded-lg border border-gray-700">
               <div className="flex flex-col mb-6">
                 <AvatarUpload 
-                  userId={session.user.name} 
+                  userId={session.user.id} 
                   url={profile?.avatar_url ? profile.avatar_url.replace(/^"|"$/g, '') : undefined} 
                 />
               </div>
