@@ -16,8 +16,8 @@ export default async function Profile() {
       href: "/profile",
     },
     {
-      title: "Billing",
-      href: "/billing",
+      title: "Plan",
+      href: "/plan",
     },
   ];
 
@@ -51,7 +51,7 @@ export default async function Profile() {
           </aside>
 
           <main className="md:col-span-3 space-y-6">
-            <h1 className="text-2xl font-bold text-white mb-6">Settings</h1>
+            <h1 className="text-2xl font-bold text-white mb-6">Account</h1>
 
             <Card className="p-6 shadow-lg rounded-lg border border-gray-700">
               <div className="flex flex-col mb-6">

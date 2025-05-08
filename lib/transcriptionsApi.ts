@@ -6,6 +6,17 @@ export interface Transcription {
   title: string;
   user_id: string;
   created_at: string;
+  // New fields
+  content?: string;            // The full text content of the transcription
+  source_language?: string;    // The language of the transcription
+  duration?: number;           // Duration of the audio in seconds
+  format?: string;             // Format used for the transcription (e.g., 'json', 'text')
+  model?: string;              // Model used for transcription (e.g., 'whisper-1')
+  file_name?: string;          // Original filename
+  file_size?: number;          // Size of the file in bytes
+  audio_file_path?: string;    // Path to the stored audio file
+  transcript_file_path?: string; // Path to the stored transcript file
+  download_url?: string;       // URL to download the transcript file
 }
 
 export interface TranscriptionRequest {
@@ -81,16 +92,24 @@ export const transcriptionsApi = createApi({
         };
       },
       invalidatesTags: ['Transcription'],
+      transformErrorResponse: (response) => {
+        console.error('Upload transcription error:', response);
+        return response;
+      },
     }),
     
     // Save transcription to database
-    saveTranscription: builder.mutation<void, { title: string; user_id: string; }>({
+    saveTranscription: builder.mutation<void, Partial<Transcription>>({
       query: (data) => ({
         url: 'transcriptions',
         method: 'POST',
         body: data,
       }),
       invalidatesTags: ['Transcription'],
+      transformErrorResponse: (response) => {
+        console.error('Save transcription error:', response);
+        return response;
+      },
     }),
     
     // Delete a transcription
@@ -111,6 +130,22 @@ export const transcriptionsApi = createApi({
         return { status: response.status, data: response.data };
       },
     }),
+
+    // Store a transcription file
+    storeTranscriptionFile: builder.mutation<{ file_path: string; download_url: string }, { id: string; content: string; format: string }>({
+      query: ({ id, content, format }) => ({
+        url: `transcriptions/${id}/file`,
+        method: 'POST',
+        body: { content, format },
+      }),
+      invalidatesTags: (_, __, { id }) => [{ type: 'Transcription', id }],
+    }),
+
+    // Get download URL for a transcription file
+    getTranscriptionDownloadUrl: builder.query<{ download_url: string }, string>({
+      query: (id) => `transcriptions/${id}/download`,
+      providesTags: (_, __, id) => [{ type: 'Transcription', id }],
+    }),
   }),
 });
 
@@ -121,4 +156,6 @@ export const {
   useUploadTranscriptionMutation,
   useSaveTranscriptionMutation,
   useDeleteTranscriptionMutation,
+  useStoreTranscriptionFileMutation,
+  useGetTranscriptionDownloadUrlQuery,
 } = transcriptionsApi;

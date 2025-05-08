@@ -102,10 +102,32 @@ function Upload() {
       const result = await uploadTranscription(transcriptionRequest).unwrap();
       
       // Extract the transcription from the response (handle different response formats)
-      const transcriptionContent = result.text || result.transcription || JSON.stringify(result);
+      let transcriptionContent: string;
+      
+      if (typeof result === 'string') {
+        transcriptionContent = result;
+      } else if (result.text) {
+        transcriptionContent = result.text;
+      } else if (result.transcription) {
+        transcriptionContent = result.transcription;
+      } else if (typeof result === 'object') {
+        // For JSON responses with segments
+        if (format === 'json' || format === 'verbose_json') {
+          transcriptionContent = JSON.stringify(result);
+        } else {
+          // For JSON responses but plain text was requested, extract text only
+          const segments = result.segments || [];
+          transcriptionContent = segments.map((segment: any) => segment.text || '').join(' ');
+        }
+      } else {
+        transcriptionContent = String(result);
+      }
+      
       const title = String(file.name);
       
-      console.log("Transcription response:", transcriptionContent);
+      console.log("Transcription response type:", typeof result);
+      console.log("Transcription response:", result);
+      console.log("Extracted content:", transcriptionContent?.substring(0, 100) + "...");
       console.log("User ID:", user.id);
       console.log("Title:", title);
       
@@ -117,7 +139,13 @@ function Upload() {
         await saveTranscription({
           title,
           user_id: user.id,
-          // Don't include content as it's not in the database schema
+          content: transcriptionContent,
+          source_language: language,
+          duration: duration || undefined,
+          format: format,
+          model: DEFAULT_MODEL,
+          file_name: file.name,
+          file_size: file.size
         });
         toast.success("Transcription saved successfully!");
       } catch (saveError) {
@@ -133,11 +161,21 @@ function Upload() {
       }
 
       toast.success("Transcription completed successfully!");
-    } catch (e) {
+    } catch (e: any) {
       console.error("Error during transcription:", e);
-      toast.error(
-        "An error occurred during transcription. You may have reached your request limit."
-      );
+      
+      // Extract the error message from the RTK Query error
+      let errorMessage = "An error occurred during transcription.";
+      
+      if (e.data?.message) {
+        errorMessage = e.data.message;
+      } else if (e.error) {
+        errorMessage = e.error;
+      } else if (e.message) {
+        errorMessage = e.message;
+      }
+      
+      toast.error(errorMessage);
     }
   };
 

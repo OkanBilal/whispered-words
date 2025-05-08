@@ -14,8 +14,8 @@ export default async function Billing() {
       href: "/profile",
     },
     {
-      title: "Billing",
-      href: "/billing",
+      title: "Plan",
+      href: "/plan",
     },
   ];
 

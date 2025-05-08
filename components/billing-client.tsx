@@ -27,10 +27,10 @@ export function BillingClient() {
             id="billing-toggle" 
             checked={yearlyBilling} 
             onCheckedChange={setYearlyBilling}
-            className="bg-gray-700 data-[state=checked]:bg-white"
+            className="bg-gray-700 data-[state=checked]:bg-green-500"
           />
           <Label htmlFor="billing-toggle" className="text-white">
-            Annual <span className="text-xs text-gray-400">2 months free</span>
+            Annual <span className="text-xs text-gray-400">(2 months free)</span>
           </Label>
         </div>
       </div>
@@ -51,7 +51,7 @@ export function BillingClient() {
               </li>
               <li className="flex items-start">
                 <span className="text-gray-300 mr-2">-</span>
-                <span className="text-gray-300">Limited transcription length (15 min)</span>
+                <span className="text-gray-300">Limited transcription length (5 min)</span>
               </li>
               <li className="flex items-start">
                 <span className="text-gray-300 mr-2">-</span>
@@ -59,7 +59,7 @@ export function BillingClient() {
               </li>
               <li className="flex items-start">
                 <span className="text-gray-300 mr-2">-</span>
-                <span className="text-gray-300">10 transcriptions per month</span>
+                <span className="text-gray-300">5 transcriptions per month</span>
               </li>
             </ul>
           </CardContent>
@@ -74,7 +74,7 @@ export function BillingClient() {
           <CardContent className="p-0">
             <P className="text-gray-300 mb-4">Create transcriptions without limits.</P>
             <P className="text-3xl font-bold text-white mb-6">
-              ${yearlyBilling ? '2.49' : '2.99'} <span className="text-sm font-normal text-gray-400">{yearlyBilling ? '/month' : '/month'}</span>
+              ${yearlyBilling ? '41.99' : '3.99'} <span className="text-sm font-normal text-gray-400">{yearlyBilling ? '/yearly' : '/month'}</span>
             </P>
 
             <ul className="space-y-2 mb-8">
@@ -114,7 +114,7 @@ export function BillingClient() {
                   id="yearly-toggle"
                   checked={yearlyBilling}
                   onCheckedChange={setYearlyBilling}
-                  className="bg-gray-700 data-[state=checked]:bg-white mr-2"
+                  className="bg-gray-700 data-[state=checked]:bg-green-500 mr-2"
                 />
                 <Label htmlFor="yearly-toggle" className="text-sm text-gray-300">
                   2 months free with annual plan

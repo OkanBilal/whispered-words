@@ -3,8 +3,9 @@
 import { useGetTranscriptionByIdQuery } from "@/lib/transcriptionsApi";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
+import DownloadTranscriptionButton from "./download-transcription-button";
 
 interface TranscriptionDetailProps {
   id: string;
@@ -43,7 +44,7 @@ export default function TranscriptionDetail({ id }: TranscriptionDetailProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center mb-6">
+      <div className="flex items-center mb-6 justify-between">
         <Button 
           onClick={() => router.back()}
           className="bg-transparent hover:bg-gray-800 text-gray-300 px-2 py-1 rounded-md"
@@ -51,6 +52,15 @@ export default function TranscriptionDetail({ id }: TranscriptionDetailProps) {
         >
           Back to Transcriptions
         </Button>
+        
+        {transcription.content && (
+          <DownloadTranscriptionButton
+            transcriptionId={transcription.id}
+            content={transcription.content}
+            format={transcription.format || 'txt'}
+            hasExistingFile={!!transcription.transcript_file_path}
+          />
+        )}
       </div>
 
       <Card className="p-6 shadow-lg rounded-lg border border-gray-700">

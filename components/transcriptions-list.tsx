@@ -168,14 +168,14 @@ export default function TranscriptionsList() {
           <DialogFooter className="mt-4 flex space-x-2">
             <Button
               onClick={() => setIsDeleteDialogOpen(false)}
-              className="bg-gray-600 hover:bg-gray-700 text-white"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded-md"
             >
               Cancel
             </Button>
             <Button
               onClick={confirmDelete}
               disabled={isDeleting}
-              className="bg-red-500 hover:bg-red-600 text-white"
+              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md"
             >
               {isDeleting ? "Deleting..." : "Delete"}
             </Button>

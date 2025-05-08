@@ -19,7 +19,6 @@ export async function GET() {
     const { data: transcriptions, error } = await supabase
       .from("transcriptions")
       .select("*")
-      .eq("user_id", session.user.id)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -54,17 +53,37 @@ export async function POST(request: Request) {
       );
     }
 
-    const { title, content, user_id } = await request.json();
-    
-    console.log("POST transcriptions request data:", { title, user_id, hasContent: !!content });
-    
-    // Validate if the user_id matches the session user id
-    if (user_id !== session.user.id) {
-      return NextResponse.json(
-        { error: "Unauthorized - User ID mismatch" },
-        { status: 403 }
-      );
-    }
+    try {
+      const { 
+        title, 
+        user_id, 
+        content, 
+        source_language, 
+        duration, 
+        format, 
+        model, 
+        file_name, 
+        transcript_file_path,
+        file_size,
+        audio_file_path,
+        download_url
+      } = await request.json();
+      
+      console.log("POST transcriptions request data:", { 
+        title, 
+        user_id, 
+        hasContent: !!content,
+        format,
+        source_language
+      });
+      
+      // Validate if the user_id matches the session user id
+      if (user_id !== session.user.id) {
+        return NextResponse.json(
+          { error: "Unauthorized - User ID mismatch" },
+          { status: 403 }
+        );
+      }
 
     // Insert the transcription record
     const { data, error } = await supabase
@@ -73,7 +92,16 @@ export async function POST(request: Request) {
         {
           title,
           user_id: session.user.id,
-          // Don't include content as it's not in the schema
+          content,
+          source_language,
+          duration,
+          format,
+          model,
+          transcript_file_path,  
+          file_name,
+          file_size,
+          audio_file_path,
+          download_url,
         },
       ])
       .select();
@@ -87,6 +115,13 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(data);
+    } catch (jsonError) {
+      console.error("Error parsing request JSON:", jsonError);
+      return NextResponse.json(
+        { error: "Invalid request format", details: (jsonError as Error).message },
+        { status: 400 }
+      );
+    }
   } catch (error) {
     console.error("Error saving transcription:", error);
     return NextResponse.json(
