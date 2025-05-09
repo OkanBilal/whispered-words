@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
-import DownloadTranscriptionButton from "./download-transcription-button";
 
 interface TranscriptionDetailProps {
   id: string;
@@ -53,14 +52,6 @@ export default function TranscriptionDetail({ id }: TranscriptionDetailProps) {
           Back to Transcriptions
         </Button>
         
-        {transcription.content && (
-          <DownloadTranscriptionButton
-            transcriptionId={transcription.id}
-            content={transcription.content}
-            format={transcription.format || 'txt'}
-            hasExistingFile={!!transcription.transcript_file_path}
-          />
-        )}
       </div>
 
       <Card className="p-6 shadow-lg rounded-lg border border-gray-700">

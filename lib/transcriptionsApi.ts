@@ -131,21 +131,6 @@ export const transcriptionsApi = createApi({
       },
     }),
 
-    // Store a transcription file
-    storeTranscriptionFile: builder.mutation<{ file_path: string; download_url: string }, { id: string; content: string; format: string }>({
-      query: ({ id, content, format }) => ({
-        url: `transcriptions/${id}/file`,
-        method: 'POST',
-        body: { content, format },
-      }),
-      invalidatesTags: (_, __, { id }) => [{ type: 'Transcription', id }],
-    }),
-
-    // Get download URL for a transcription file
-    getTranscriptionDownloadUrl: builder.query<{ download_url: string }, string>({
-      query: (id) => `transcriptions/${id}/download`,
-      providesTags: (_, __, id) => [{ type: 'Transcription', id }],
-    }),
   }),
 });
 
@@ -156,6 +141,4 @@ export const {
   useUploadTranscriptionMutation,
   useSaveTranscriptionMutation,
   useDeleteTranscriptionMutation,
-  useStoreTranscriptionFileMutation,
-  useGetTranscriptionDownloadUrlQuery,
 } = transcriptionsApi;
