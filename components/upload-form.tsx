@@ -12,7 +12,7 @@ import * as mm from "music-metadata-browser";
 import { createClient } from "@/lib/supabase/client";
 import { Textarea } from "./ui/text-area";
 import { Label } from "./ui/label";
-import { useUploadTranscriptionMutation, useSaveTranscriptionMutation } from "@/lib/transcriptionsApi";
+import { useUploadTranscriptionMutation, useSaveTranscriptionMutation } from "@/lib/redux";
 import { Loader } from "./icons";
 
 

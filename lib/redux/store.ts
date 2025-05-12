@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
-import { authReducer } from "./authSlice";
-import { errorReducer } from "./errorSlice";
-import { transcriptionsApi } from "./transcriptionsApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
+
+// Import reducers
+import { authReducer } from "./slices/authSlice";
+import { errorReducer } from "./slices/errorSlice";
+import { transcriptionsApi } from "./api/transcriptionsApi";
 
 export const store = configureStore({
   reducer: { 
@@ -19,8 +20,6 @@ export const store = configureStore({
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
 setupListeners(store.dispatch);
 
+// Export store types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

@@ -3,8 +3,8 @@ import { Span } from "./ui/text";
 import AuthButton from "./auth-button-client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useAppDispatch, useAppSelector } from "@/lib/store";
-import { setAuthState } from "@/lib/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux";
+import { setAuthState } from "@/lib/redux";
 
 export default function Header() {
   const dispatch = useAppDispatch();

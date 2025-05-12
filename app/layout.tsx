@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "sonner";
-import ReduxProvider from "@/components/ReduxProvider";
+import ReduxProvider from "@/components/redux-provider";
 
 const inter = Mulish({ subsets: ["latin"] });
 

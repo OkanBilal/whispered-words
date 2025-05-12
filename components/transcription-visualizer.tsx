@@ -15,7 +15,6 @@ interface TranscriptionVisualizerProps {
   };
 }
 
-// Memoized word component to prevent unnecessary re-renders
 const TranscriptionWord = memo(({ 
   word, 
   isActive, 
@@ -52,7 +51,6 @@ const TranscriptionVisualizer: React.FC<TranscriptionVisualizerProps> = ({ audio
     }
   }, []);
 
-  // Find active word based on current time
   useEffect(() => {
     const activeIndex = transcription.words.findIndex(
       (word) => currentTime >= word.start && currentTime <= word.end
@@ -63,7 +61,6 @@ const TranscriptionVisualizer: React.FC<TranscriptionVisualizerProps> = ({ audio
     }
   }, [currentTime, transcription.words, activeWordIndex]);
 
-  // Set up audio time tracking
   useEffect(() => {
     const updateTime = () => {
       if (audioRef.current) {

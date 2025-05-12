@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "@/lib/store";
-import { clearError } from "@/lib/errorSlice";
+import { useAppSelector, useAppDispatch } from "@/lib/redux";
+import { clearError } from "@/lib/redux";
 import { X } from "lucide-react";
 
 export default function NotificationToast() {

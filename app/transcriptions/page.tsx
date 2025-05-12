@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Header from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
-import ReduxProvider from "@/components/ReduxProvider";
+import ReduxProvider from "@/components/redux-provider";
 import TranscriptionsList from "@/components/transcriptions-list";
 
 export default async function TranscriptionPage() {

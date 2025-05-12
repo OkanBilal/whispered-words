@@ -1,22 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Define types
 export interface Transcription {
   id: string;
   title: string;
   user_id: string;
   created_at: string;
-  // New fields
-  content?: string;            // The full text content of the transcription
-  source_language?: string;    // The language of the transcription
-  duration?: number;           // Duration of the audio in seconds
-  format?: string;             // Format used for the transcription (e.g., 'json', 'text')
-  model?: string;              // Model used for transcription (e.g., 'whisper-1')
-  file_name?: string;          // Original filename
-  file_size?: number;          // Size of the file in bytes
-  audio_file_path?: string;    // Path to the stored audio file
-  transcript_file_path?: string; // Path to the stored transcript file
-  download_url?: string;       // URL to download the transcript file
+  content?: string;            
+  source_language?: string;    
+  duration?: number;           
+  format?: string;
+  model?: string;
+  file_name?: string;
+  file_size?: number;
+  audio_file_path?: string;
+  transcript_file_path?: string;
+  download_url?: string;
 }
 
 export interface TranscriptionRequest {
@@ -28,9 +26,8 @@ export interface TranscriptionRequest {
 }
 
 export interface TranscriptionResponse {
-  text?: string;          // For text format
-  transcription?: string; // For backward compatibility
-  // For JSON format
+  text?: string;
+  transcription?: string;
   task?: string;
   language?: string;
   duration?: number;
@@ -48,16 +45,14 @@ export interface TranscriptionResponse {
   }>;
 }
 
-// Create the API
 export const transcriptionsApi = createApi({
   reducerPath: 'transcriptionsApi',
   baseQuery: fetchBaseQuery({ 
     baseUrl: '/api/',
-    credentials: 'include', // Include credentials for authenticated requests
+    credentials: 'include', 
   }),
   tagTypes: ['Transcription'],
   endpoints: (builder) => ({
-    // Get all transcriptions for a user
     getTranscriptions: builder.query<Transcription[], void>({
       query: () => 'transcriptions',
       providesTags: (result = []) => [
@@ -66,13 +61,11 @@ export const transcriptionsApi = createApi({
       ],
     }),
     
-    // Get a single transcription by ID
     getTranscriptionById: builder.query<Transcription, string>({
       query: (id) => `transcriptions/${id}`,
       providesTags: (_, __, id) => [{ type: 'Transcription', id }],
     }),
     
-    // Upload and transcribe an audio file
     uploadTranscription: builder.mutation<TranscriptionResponse, TranscriptionRequest>({
       query: (transcriptionRequest) => {
         const formData = new FormData();
@@ -98,7 +91,6 @@ export const transcriptionsApi = createApi({
       },
     }),
     
-    // Save transcription to database
     saveTranscription: builder.mutation<void, Partial<Transcription>>({
       query: (data) => ({
         url: 'transcriptions',
@@ -112,7 +104,6 @@ export const transcriptionsApi = createApi({
       },
     }),
     
-    // Delete a transcription
     deleteTranscription: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
         url: `transcriptions/${id}`,
@@ -120,11 +111,9 @@ export const transcriptionsApi = createApi({
         credentials: 'include',
       }),
       invalidatesTags: (_, __, id) => [{ type: 'Transcription', id }, 'Transcription'],
-      // Add transformResponse to normalize the API response
       transformResponse: (response: { success: boolean } | undefined) => {
         return response || { success: false };
       },
-      // Add the transformErrorResponse to normalize API errors
       transformErrorResponse: (response) => {
         console.error('Delete transcription error:', response);
         return { status: response.status, data: response.data };
@@ -134,7 +123,6 @@ export const transcriptionsApi = createApi({
   }),
 });
 
-// Export hooks for usage in components
 export const {
   useGetTranscriptionsQuery,
   useGetTranscriptionByIdQuery,

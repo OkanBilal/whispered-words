@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetTranscriptionByIdQuery } from "@/lib/transcriptionsApi";
+import { useGetTranscriptionByIdQuery } from "@/lib/redux";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";

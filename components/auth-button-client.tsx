@@ -2,13 +2,13 @@
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/store";
-import { setAuthState } from "@/lib/authSlice";
+import { setAuthState } from "@/lib/redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { User } from "@supabase/supabase-js";
 import { PersonIcon, FileTextIcon, ExitIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/lib/redux";
 
 interface AuthButtonProps {
   session: any; 

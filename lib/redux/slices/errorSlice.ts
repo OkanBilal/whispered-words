@@ -1,18 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { transcriptionsApi } from './transcriptionsApi';
+import { transcriptionsApi } from '../api/transcriptionsApi';
 
+// Define the state interface
 interface ErrorState {
   message: string | null;
   status: number | null;
   type: 'info' | 'warning' | 'error' | 'success' | null;
 }
 
+// Define the initial state
 const initialState: ErrorState = {
   message: null,
   status: null,
   type: null,
 };
 
+// Create the slice
 const errorSlice = createSlice({
   name: 'error',
   initialState,
@@ -96,5 +99,6 @@ const errorSlice = createSlice({
   },
 });
 
+// Export actions and reducer
 export const { setError, setSuccess, clearError } = errorSlice.actions;
 export const errorReducer = errorSlice.reducer;
